@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Response with Citations — earth.pdf</title>
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --muted: #5c5c5c;
+      --accent: #c2410c;
+      --accent-bg: #fff1ec;
+      --border: #e2ded9;
+      --ring: #c2410c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1816;
+        --surface: #242120;
+        --text: #f2efeb;
+        --muted: #a8a29a;
+        --accent: #fb923c;
+        --accent-bg: #3a2417;
+        --border: #3a3633;
+        --ring: #fb923c;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      font-size: 18px;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.9rem;
+    }
+    h1 {
+      font-size: 1.65rem;
+      line-height: 1.25;
+      margin: 0 0 0.4rem;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    .answer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      font-size: 1.15rem;
+    }
+    .answer p { margin: 0; }
+    /* Citation reference marker */
+    .cite-ref {
+      display: inline-block;
+      font-size: 0.72em;
+      font-weight: 700;
+      vertical-align: super;
+      line-height: 1;
+      margin-left: 1px;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+    .cite-ref:hover { text-decoration: underline; }
+    .cite-ref:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+    /* Highlight target when a citation is jumped to */
+    :target { animation: flash 1.8s ease; }
+    @keyframes flash {
+      0%, 35% { background: var(--accent-bg); }
+      100% { background: transparent; }
+    }
+    h2 {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin: 2.75rem 0 1rem;
+    }
+    .sources { list-style: none; margin: 0; padding: 0; }
+    .source {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.9rem;
+      scroll-margin-top: 1rem;
+    }
+    .source-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .source-num {
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .source-doc {
+      font-weight: 600;
+    }
+    .source-loc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    blockquote.quote {
+      margin: 0;
+      padding: 0.6rem 0.9rem;
+      background: var(--bg);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--text);
+      font-style: italic;
+    }
+    .back {
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: var(--accent);
+      margin-left: 0.4rem;
+    }
+    .back:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 0.9rem;
+      border-radius: 0 0 6px 0;
+      z-index: 10;
+    }
+    .skip-link:focus { left: 0; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#answer">Skip to answer</a>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow">Claude · sonnet-4-5 · grounded answer</span>
+      <h1>How were Earth's atmosphere and oceans formed?</h1>
+      <p class="meta">Answer generated with citations from <strong>earth.pdf</strong>. Each claim links to the exact source passage it was drawn from.</p>
+    </header>
+
+    <main id="answer" aria-labelledby="answer-label">
+      <h2 id="answer-label" style="margin-top:0">Answer</h2>
+      <div class="answer">
+        <p>
+          Earth's atmosphere and oceans were formed by volcanic activity and
+          outgassing.<a class="cite-ref" href="#source-1" id="ref-1"
+            aria-label="Citation 1, from earth.pdf pages 4 to 5">[1]</a>
+          Water vapor from these sources condensed into the oceans, augmented by
+          water and ice from asteroids, protoplanets, and comets.<a class="cite-ref"
+            href="#source-2" id="ref-2"
+            aria-label="Citation 2, from earth.pdf pages 4 to 5">[2]</a>
+        </p>
+      </div>
+    </main>
+
+    <section aria-labelledby="sources-label">
+      <h2 id="sources-label">Sources</h2>
+      <ol class="sources">
+        <li class="source" id="source-1">
+          <div class="source-head">
+            <span class="source-num">[1]</span>
+            <span class="source-doc">earth.pdf</span>
+            <span class="source-loc">Pages 4–5</span>
+            <a class="back" href="#ref-1" aria-label="Back to citation 1 in the answer">↩ back</a>
+          </div>
+          <blockquote class="quote">
+            &ldquo;[42] Earth's atmosphere and oceans were formed by volcanic
+            activity and outgassing.&rdquo;
+          </blockquote>
+        </li>
+        <li class="source" id="source-2">
+          <div class="source-head">
+            <span class="source-num">[2]</span>
+            <span class="source-doc">earth.pdf</span>
+            <span class="source-loc">Pages 4–5</span>
+            <a class="back" href="#ref-2" aria-label="Back to citation 2 in the answer">↩ back</a>
+          </div>
+          <blockquote class="quote">
+            &ldquo;[43] Water vapor from these sources condensed into the oceans,
+            augmented by water and ice from asteroids, protoplanets, and
+            comets.&rdquo;
+          </blockquote>
+        </li>
+      </ol>
+    </section>
+
+    <footer>
+      Rendered from a Claude Messages API response (<code>stop_reason: end_turn</code>).
+      Citation markers are keyboard-focusable and screen-reader labeled; activating one
+      jumps to the source passage and briefly highlights it.
+    </footer>
+  </div>
+</body>
+</html>
