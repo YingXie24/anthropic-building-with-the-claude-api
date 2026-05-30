@@ -1,0 +1,230 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prompt Evaluation Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            .header {
+                background-color: #f0f0f0;
+                padding: 20px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
+            .summary-stats {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .stat-box {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                flex-basis: 30%;
+                min-width: 200px;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+                margin-top: 5px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th {
+                background-color: #4a4a4a;
+                color: white;
+                text-align: left;
+                padding: 12px;
+            }
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                vertical-align: top;
+            }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .output-cell {
+                white-space: pre-wrap;
+            }
+            .score {
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 3px;
+                display: inline-block;
+            }
+            .score-high {
+                background-color: #c8e6c9;
+                color: #2e7d32;
+            }
+            .score-medium {
+                background-color: #fff9c4;
+                color: #f57f17;
+            }
+            .score-low {
+                background-color: #ffcdd2;
+                color: #c62828;
+            }
+            .output {
+                overflow: auto;
+                white-space: pre-wrap;
+            }
+
+            .output pre {
+                background-color: #f5f5f5;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 0;
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.4;
+                color: #333;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+                white-space: pre-wrap; 
+                word-wrap: break-word; 
+            }
+
+            td {
+                width: 20%;
+            }
+            .score-col {
+                width: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Prompt Evaluation Report</h1>
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <div>Total Test Cases</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-box">
+                    <div>Average Score</div>
+                    <div class="stat-value">8.3 / 10</div>
+                </div>
+                <div class="stat-box">
+                    <div>Pass Rate (≥7)</div>
+                    <div class="stat-value">100.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Prompt Inputs</th>
+                    <th>Solution Criteria</th>
+                    <th>Output</th>
+                    <th>Score</th>
+                    <th>Reasoning</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+            <tr>
+                <td>Testing with an interdisciplinary passage containing mixed topics (biology, technology, and ethics) to verify the prompt correctly identifies and separates distinct subject areas</td>
+                <td class="prompt-inputs"><strong>content:</strong> Recent advances in CRISPR gene-editing technology have revolutionized molecular biology, enabling precise modifications to DNA sequences with unprecedented accuracy and efficiency. However, the application of germline editing in human embryos raises significant ethical concerns regarding consent, equity of access, and potential long-term ecological impacts. Furthermore, the integration of machine learning algorithms to predict off-target genetic mutations has transformed computational biology, allowing researchers to design safer editing protocols. Simultaneously, regulatory frameworks across different nations struggle to keep pace with technological innovation, creating disparities in how countries approve and monitor gene-therapy treatments for inherited diseases.</td>
+                <td class="criteria">• Extracts all major distinct topics: gene-editing technology, ethical concerns, machine learning/computational biology, and regulatory frameworks<br>• Returns topics in a valid JSON array of strings format<br>• Separates interdisciplinary topics appropriately without over-merging or over-fragmenting</td>
+                <td class="output"><pre>```json
+[
+  "CRISPR gene-editing technology",
+  "molecular biology",
+  "DNA modifications",
+  "germline editing",
+  "human embryos",
+  "ethical concerns",
+  "consent",
+  "equity of access",
+  "ecological impacts",
+  "machine learning algorithms",
+  "off-target genetic mutations",
+  "computational biology",
+  "gene-therapy treatments",
+  "inherited diseases",
+  "regulatory frameworks",
+  "technological innovation"
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements: it is a valid JSON array of strings containing topics from the article with no extra commentary, and the response contains only the JSON array. It also meets the secondary criteria by extracting all major distinct topics across the four key areas mentioned in the criteria. The topic separation is appropriate and well-balanced. While there are minor opportunities to consolidate some highly specific sub-topics, the current extraction is reasonable and defensible as distinct topics worthy of extraction from a scholarly article.</td>
+            </tr>
+        
+            <tr>
+                <td>Testing with a dense theoretical passage from philosophy or mathematics where topics are implicit rather than explicitly stated, requiring inference and abstraction</td>
+                <td class="prompt-inputs"><strong>content:</strong> The formalization of intuitionistic logic through Heyting algebras reveals a fundamental departure from classical truth-functional semantics, wherein the law of excluded middle loses its status as a logical tautology. This constructivist framework necessitates a reconceptualization of negation as the absence of proof rather than truth-value assignment, creating a lattice-theoretic structure where the distributive property no longer universally obtains. The implications extend to mathematical practice itself: the axiom of choice becomes suspect, infinite sets require explicit constructive specification, and the notion of mathematical existence becomes inseparable from algorithmic decidability and computational realization.</td>
+                <td class="criteria">• Identifies implicit topics that require inference (e.g., constructivism, proof theory, semantics, mathematical philosophy) rather than only explicitly named concepts<br>• Captures the core theoretical domains and conceptual frameworks discussed, even when presented through technical relationships rather than direct statements<br>• Produces a well-formed JSON array of strings with reasonable topic granularity</td>
+                <td class="output"><pre>```json
+[
+  "intuitionistic logic",
+  "Heyting algebras",
+  "classical truth-functional semantics",
+  "law of excluded middle",
+  "constructivism",
+  "negation",
+  "proof theory",
+  "lattice-theoretic structure",
+  "distributive property",
+  "axiom of choice",
+  "infinite sets",
+  "constructive specification",
+  "mathematical existence",
+  "algorithmic decidability",
+  "computational realization",
+  "mathematical practice"
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements: it is a well-formed JSON array of strings containing topics from the passage, with no extraneous commentary. It excels at the secondary criteria by identifying implicit topics requiring inference (constructivism, algorithmic decidability) and capturing core theoretical frameworks. The topic granularity is appropriate and reasonable. Minor weaknesses include the inclusion of 'mathematical practice' as a topic when it functions more as contextual scaffolding, and the omission of 'semantics' despite its prominence in the opening clause. These are minor issues that don't substantially detract from an otherwise comprehensive and well-executed extraction.</td>
+            </tr>
+        
+            <tr>
+                <td>Testing with a passage containing overlapping and nested topics (e.g., machine learning as a subtopic of AI, which is part of computer science) to ensure the prompt extracts the appropriate level of granularity</td>
+                <td class="prompt-inputs"><strong>content:</strong> Recent advances in deep learning have revolutionized artificial intelligence applications across multiple domains. Machine learning models, particularly neural networks, have demonstrated exceptional performance in natural language processing tasks such as sentiment analysis and machine translation. These deep learning architectures leverage computational advances in GPU technology to process large-scale datasets, enabling the development of sophisticated AI systems for computer vision and autonomous decision-making. The intersection of machine learning and cognitive science has also yielded insights into how artificial neural networks approximate biological learning mechanisms, while the broader field of computer science continues to integrate these AI methodologies into practical software engineering frameworks.</td>
+                <td class="criteria">• Extracts both high-level topics (AI, computer science) and mid-level topics (machine learning, deep learning, neural networks) without unnecessary duplication<br>• Identifies specific application areas (natural language processing, computer vision, sentiment analysis) as distinct topics<br>• Avoids over-fragmentation by not extracting every modifier or implementation detail as separate topics</td>
+                <td class="output"><pre>```json
+[
+  "deep learning",
+  "artificial intelligence",
+  "machine learning",
+  "neural networks",
+  "natural language processing",
+  "sentiment analysis",
+  "machine translation",
+  "GPU technology",
+  "large-scale datasets",
+  "computer vision",
+  "autonomous decision-making",
+  "cognitive science",
+  "artificial neural networks",
+  "biological learning mechanisms",
+  "computer science",
+  "software engineering"
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements: it is a valid JSON array of strings containing topics from the article with no extra commentary. It performs well on the secondary criteria by balancing high-level and mid-level topics while identifying specific applications. However, it has two minor deficiencies: 'artificial neural networks' duplicates 'neural networks' (violating the 'without unnecessary duplication' criterion), and 'large-scale datasets' represents over-fragmentation of an implementation detail rather than a core topic. These are relatively minor issues that don't undermine the overall quality of the extraction.</td>
+            </tr>
+        
+            </tbody>
+        </table>
+    </body>
+    </html>
+    

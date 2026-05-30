@@ -1,0 +1,38 @@
+[
+  {
+    "prompt_inputs": {
+      "content": "Recent advances in CRISPR gene-editing technology have revolutionized molecular biology, enabling precise modifications to DNA sequences with unprecedented accuracy and efficiency. However, the application of germline editing in human embryos raises significant ethical concerns regarding consent, equity of access, and potential long-term ecological impacts. Furthermore, the integration of machine learning algorithms to predict off-target genetic mutations has transformed computational biology, allowing researchers to design safer editing protocols. Simultaneously, regulatory frameworks across different nations struggle to keep pace with technological innovation, creating disparities in how countries approve and monitor gene-therapy treatments for inherited diseases."
+    },
+    "solution_criteria": [
+      "Extracts all major distinct topics: gene-editing technology, ethical concerns, machine learning/computational biology, and regulatory frameworks",
+      "Returns topics in a valid JSON array of strings format",
+      "Separates interdisciplinary topics appropriately without over-merging or over-fragmenting"
+    ],
+    "task_description": "Extract topics out of a passage of text from a scholarly article into a JSON array of strings",
+    "scenario": "Testing with an interdisciplinary passage containing mixed topics (biology, technology, and ethics) to verify the prompt correctly identifies and separates distinct subject areas"
+  },
+  {
+    "prompt_inputs": {
+      "content": "The formalization of intuitionistic logic through Heyting algebras reveals a fundamental departure from classical truth-functional semantics, wherein the law of excluded middle loses its status as a logical tautology. This constructivist framework necessitates a reconceptualization of negation as the absence of proof rather than truth-value assignment, creating a lattice-theoretic structure where the distributive property no longer universally obtains. The implications extend to mathematical practice itself: the axiom of choice becomes suspect, infinite sets require explicit constructive specification, and the notion of mathematical existence becomes inseparable from algorithmic decidability and computational realization."
+    },
+    "solution_criteria": [
+      "Identifies implicit topics that require inference (e.g., constructivism, proof theory, semantics, mathematical philosophy) rather than only explicitly named concepts",
+      "Captures the core theoretical domains and conceptual frameworks discussed, even when presented through technical relationships rather than direct statements",
+      "Produces a well-formed JSON array of strings with reasonable topic granularity"
+    ],
+    "task_description": "Extract topics out of a passage of text from a scholarly article into a JSON array of strings",
+    "scenario": "Testing with a dense theoretical passage from philosophy or mathematics where topics are implicit rather than explicitly stated, requiring inference and abstraction"
+  },
+  {
+    "prompt_inputs": {
+      "content": "Recent advances in deep learning have revolutionized artificial intelligence applications across multiple domains. Machine learning models, particularly neural networks, have demonstrated exceptional performance in natural language processing tasks such as sentiment analysis and machine translation. These deep learning architectures leverage computational advances in GPU technology to process large-scale datasets, enabling the development of sophisticated AI systems for computer vision and autonomous decision-making. The intersection of machine learning and cognitive science has also yielded insights into how artificial neural networks approximate biological learning mechanisms, while the broader field of computer science continues to integrate these AI methodologies into practical software engineering frameworks."
+    },
+    "solution_criteria": [
+      "Extracts both high-level topics (AI, computer science) and mid-level topics (machine learning, deep learning, neural networks) without unnecessary duplication",
+      "Identifies specific application areas (natural language processing, computer vision, sentiment analysis) as distinct topics",
+      "Avoids over-fragmentation by not extracting every modifier or implementation detail as separate topics"
+    ],
+    "task_description": "Extract topics out of a passage of text from a scholarly article into a JSON array of strings",
+    "scenario": "Testing with a passage containing overlapping and nested topics (e.g., machine learning as a subtopic of AI, which is part of computer science) to ensure the prompt extracts the appropriate level of granularity"
+  }
+]
