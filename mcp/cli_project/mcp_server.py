@@ -1,6 +1,7 @@
 # Official Python SDK to buil MCP servers. The SDK writes JSON schemas for tools for us.
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
+from mcp.server.fastmcp.prompts import base
 
 #  Initialise MCP server
 mcp = FastMCP("DocumentMCP", log_level="ERROR")
@@ -65,10 +66,32 @@ def fetch_doc(doc_id: str) -> str:
         raise ValueError(f"Doc with id {doc_id} not found")
     return docs[doc_id]
 
-# TODO: Write a prompt to rewrite a doc in markdown format
+# PROMPTS. Prompts allows us to pre-build high quality prompts to send to Claude, like a slash command
+# Write a prompt to rewrite a doc in markdown format
+@mcp.prompt(
+    name="format",
+    description="Rewrites the contents of the document in Markdown format"
+)
+def format_document(
+    doc_id: str = Field(description="Id of the document to format")
+) -> list[base.Message]:
+    prompt=f"""
+Your goal is to reformat a document to be written with markdown syntax.
+
+The id of the document you need to reformat is:
+
+{doc_id}
+
+Add in headers, bullet points, tables, etc as necessary. Feel free to add in extra formatting. 
+Use the 'edit_document' tool to edit the document. After the document has been reformatted...
+    """
+
+    return [
+        base.UserMessage(prompt)
+    ]
 # TODO: Write a prompt to summarize a doc
 
-# To test that the server works as expected, run in terminal `mcp dev mcp_server.py`
+# To test that the server works as expected, run in terminal `uv run mcp dev mcp_server.py`
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")
