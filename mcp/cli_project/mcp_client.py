@@ -4,6 +4,8 @@ from typing import Optional, Any
 from contextlib import AsyncExitStack
 from mcp import ClientSession, StdioServerParameters, types
 from mcp.client.stdio import stdio_client
+import json
+from pydantic import AnyUrl 
 
 
 class MCPClient:
@@ -34,6 +36,7 @@ class MCPClient:
         )
         await self._session.initialize()
 
+    # Client Session is the actual conection to the MCP server
     def session(self) -> ClientSession:
         if self._session is None:
             raise ConnectionError(
@@ -41,15 +44,18 @@ class MCPClient:
             )
         return self._session
 
+    #  Return a list of tools defined by the MCP server
     async def list_tools(self) -> list[types.Tool]:
-        # TODO: Return a list of tools defined by the MCP server
-        return []
+        # Access the session and call the built-in list_tools() function
+        result = await self.session().list_tools()
+        return result.tools
 
+    # Call a particular tool and return the result
     async def call_tool(
         self, tool_name: str, tool_input: dict
     ) -> types.CallToolResult | None:
-        # TODO: Call a particular tool and return the result
-        return None
+        result =  await self.session().call_tool(tool_name, tool_input)
+        return result
 
     async def list_prompts(self) -> list[types.Prompt]:
         # TODO: Return a list of prompts defined by the MCP server
@@ -59,9 +65,18 @@ class MCPClient:
         # TODO: Get a particular prompt defined by the MCP server
         return []
 
+    # Read a resource, parse the contents and return it
     async def read_resource(self, uri: str) -> Any:
-        # TODO: Read a resource, parse the contents and return it
-        return []
+        result = await self.session().read_resource(AnyUrl(uri))
+        resource = result.contents[0]
+        
+        # Resources can return different types of content. Parse appropriately by the MIME type
+        if isinstance(resource, types.TextResourceContents):
+            if resource.mimeType == "application/json":
+                return json.loads(resource.text)
+            
+            # return text if the mimeType is plain.text
+            return resource.text
 
     async def cleanup(self):
         await self._exit_stack.aclose()
@@ -82,10 +97,14 @@ async def main():
         command="uv",
         args=["run", "mcp_server.py"],
     ) as _client:
-        pass
+        result = await _client.list_tools()
+        print(result)
 
 
 if __name__ == "__main__":
     if sys.platform == "win32":
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
     asyncio.run(main())
+
+
+# Test with uv run main.py

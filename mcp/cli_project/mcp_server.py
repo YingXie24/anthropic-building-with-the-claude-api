@@ -15,6 +15,7 @@ docs = {
     "spec.txt": "These specifications define the technical requirements for the equipment.",
 }
 
+# TOOLS
 # Write a tool to read a doc
 # The @mcp.tool decorator generates the JSON schema that Claude needs
 @mcp.tool(
@@ -30,7 +31,7 @@ def read_document(
     
     return docs[doc_id]
 
-# TODO: Write a tool to edit a doc
+# Write a tool to edit a doc
 @mcp.tool(
     name='edit_document',
     description='Edit a document by replacing a string in the documents content with a new string'
@@ -45,8 +46,25 @@ def edit_document(
 
     docs[doc_id] = docs[doc_id].replace(old_str, new_str)
 
-# TODO: Write a resource to return all doc id's
-# TODO: Write a resource to return the contents of a particular doc
+# RESOURCES (Resources fetch data, tools perform actions)
+# Write a DIRECT resource to return all doc id's. URIs in direct resources do not contain any params.
+@mcp.resource(
+    "docs://documents",
+    mime_type="application/json" #MIME type helps cliensts understand response format
+)
+def list_docs() -> list[str]:
+    return list(docs.keys()) #The MCP Python SDK automatically serialises the return values. There is no need to manually convert to JSON strings
+
+# Write a TEMPLATED resource to return the contents of a particular doc. URIs in templated resources contain one or more params,
+@mcp.resource(
+    "docs://documents/{doc_id}",
+    mime_type="text/plain"
+)
+def fetch_doc(doc_id: str) -> str:
+    if doc_id not in docs:
+        raise ValueError(f"Doc with id {doc_id} not found")
+    return docs[doc_id]
+
 # TODO: Write a prompt to rewrite a doc in markdown format
 # TODO: Write a prompt to summarize a doc
 
